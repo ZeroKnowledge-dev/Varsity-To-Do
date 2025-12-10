@@ -29,6 +29,8 @@
     --presentation: #10b981;
     --exam: #ef4444;
     --quiz: #f59e0b;
+    --report: #06b6d4;
+    --viva: #ec4899;
     --others: #8b5cf6;
     
     /* Status Colors */
@@ -475,6 +477,8 @@ body {
 .task-card.presentation::before { background: var(--presentation); }
 .task-card.exam::before { background: var(--exam); }
 .task-card.quiz::before { background: var(--quiz); }
+.task-card.report::before { background: var(--report); }
+.task-card.viva::before { background: var(--viva); }
 .task-card.others::before { background: var(--others); }
 
 .task-header {
@@ -500,6 +504,8 @@ body {
 .task-type.presentation { background: var(--presentation); }
 .task-type.exam { background: var(--exam); }
 .task-type.quiz { background: var(--quiz); }
+.task-type.report { background: var(--report); }
+.task-type.viva { background: var(--viva); }
 .task-type.others { background: var(--others); }
 
 .task-actions {
@@ -1020,4 +1026,5 @@ body {
         width: 44px;
         height: 44px;
     }
+
 }
