@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University Task Manager</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js"></script>
+</head>
+<body>
+    <!-- Dark Mode Toggle -->
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <div class="app-icon">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <div>
+                    <h1>Task Manager</h1>
+                    <p>Track your university journey</p>
+                </div>
+            </div>
+            <div class="stats">
+                <div class="stat-badge">
+                    <i class="fas fa-tasks"></i>
+                    <span id="total-tasks">0</span>
+                </div>
+                <div class="stat-badge pending-badge">
+                    <i class="fas fa-clock"></i>
+                    <span id="pending-count">0</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Search and Filter Section -->
+        <div class="search-filter-section">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="search-input" placeholder="Search tasks...">
+                <button class="clear-search" onclick="clearSearch()" style="display: none;">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Filter Chips -->
+        <div class="filter-chips">
+            <button class="chip active" data-filter="all">
+                <i class="fas fa-layer-group"></i>
+                <span>All</span>
+            </button>
+            <button class="chip" data-filter="pending">
+                <i class="fas fa-clock"></i>
+                <span>Pending</span>
+            </button>
+            <button class="chip" data-filter="assignment">
+                <i class="fas fa-file-alt"></i>
+                <span>Assignments</span>
+            </button>
+            <button class="chip" data-filter="presentation">
+                <i class="fas fa-presentation"></i>
+                <span>Presentations</span>
+            </button>
+            <button class="chip" data-filter="exam">
+                <i class="fas fa-book-open"></i>
+                <span>Exams</span>
+            </button>
+            <button class="chip" data-filter="quiz">
+                <i class="fas fa-question-circle"></i>
+                <span>Quizzes</span>
+            </button>
+        </div>
+
+        <!-- Sort Options -->
+        <div class="sort-section">
+            <button class="sort-btn active" data-sort="date-asc">
+                <i class="fas fa-sort-amount-up"></i>
+                <span>Earliest First</span>
+            </button>
+            <button class="sort-btn" data-sort="date-desc">
+                <i class="fas fa-sort-amount-down"></i>
+                <span>Latest First</span>
+            </button>
+        </div>
+
+        <!-- Pending Tasks Section -->
+        <div class="section-header">
+            <h2>
+                <i class="fas fa-clipboard-list"></i>
+                Pending Tasks
+            </h2>
+        </div>
+        <div id="pending-tasks" class="tasks-grid"></div>
+
+        <!-- Completed Tasks Section -->
+        <div id="completed-section" style="display: none;">
+            <div class="section-header collapsible" onclick="toggleCompleted()">
+                <h2>
+                    <i class="fas fa-check-circle"></i>
+                    Completed Tasks
+                    <span class="count-badge" id="completed-count">0</span>
+                </h2>
+                <i class="fas fa-chevron-down" id="collapse-icon"></i>
+            </div>
+            <div class="collapsible-content" id="completed-tasks"></div>
+        </div>
+
+        <!-- Empty State -->
+        <div id="empty-state" class="empty-state" style="display: none;">
+            <div class="empty-illustration">
+                <i class="fas fa-clipboard-list"></i>
+            </div>
+            <h3>No tasks found</h3>
+            <p>Start adding tasks to track your university work</p>
+            <button class="btn btn-primary" onclick="openModal()">
+                <i class="fas fa-plus"></i>
+                Add Your First Task
+            </button>
+        </div>
+    </div>
+
+    <!-- Floating Action Button -->
+    <button class="fab" onclick="openModal()" aria-label="Add new task">
+        <i class="fas fa-plus"></i>
+        <span class="fab-text">Add Task</span>
+    </button>
+
+    <!-- Add/Edit Task Modal -->
+    <div class="modal" id="task-modal">
+        <div class="modal-backdrop" onclick="closeModal()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>
+                    <h2 id="modal-title">
+                        <i class="fas fa-plus-circle"></i>
+                        Add New Task
+                    </h2>
+                    <p class="modal-subtitle">Fill in the details below</p>
+                </div>
+                <button class="close-btn" onclick="closeModal()" aria-label="Close modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="task-form">
+                    <div class="form-group">
+                        <label>
+                            <i class="fas fa-book"></i>
+                            Subject
+                        </label>
+                        <input type="text" id="subject" required placeholder="e.g., Data Structures" autocomplete="off">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>
+                            <i class="fas fa-align-left"></i>
+                            Topic / Description
+                        </label>
+                        <textarea id="topic" rows="4" required placeholder="e.g., Implement Binary Search Tree with insertion and deletion operations"></textarea>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>
+                                <i class="fas fa-tag"></i>
+                                Type
+                            </label>
+                            <div class="select-wrapper">
+                                <select id="type" required>
+                                    <option value="">Select type</option>
+                                    <option value="assignment">📝 Assignment</option>
+                                    <option value="presentation">📊 Presentation</option>
+                                    <option value="exam">📚 Exam</option>
+                                    <option value="quiz">❓ Quiz</option>
+                                    <option value="others">📌 Others</option>
+                                </select>
+                                <i class="fas fa-chevron-down select-icon"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>
+                                <i class="fas fa-calendar-alt"></i>
+                                Due Date
+                            </label>
+                            <input type="date" id="date" required>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        <i class="fas fa-check"></i>
+                        <span id="btn-text">Add Task</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal" id="delete-modal">
+        <div class="modal-backdrop" onclick="closeDeleteModal()"></div>
+        <div class="modal-content modal-small">
+            <div class="modal-header">
+                <h2>
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Delete Task?
+                </h2>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this task? This action cannot be undone.</p>
+                <div class="modal-actions">
+                    <button class="btn btn-secondary" onclick="closeDeleteModal()">
+                        Cancel
+                    </button>
+                    <button class="btn btn-danger" onclick="confirmDelete()">
+                        <i class="fas fa-trash"></i>
+                        Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
