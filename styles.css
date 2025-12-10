@@ -511,7 +511,6 @@ body {
 .task-actions {
     display: flex;
     gap: 0.5rem;
-    opacity: 1;
     transition: var(--transition);
 }
 
@@ -1024,4 +1023,5 @@ body {
     }
 
 }
+
 
