@@ -511,12 +511,8 @@ body {
 .task-actions {
     display: flex;
     gap: 0.5rem;
-    opacity: 0;
-    transition: var(--transition);
-}
-
-.task-card:hover .task-actions {
     opacity: 1;
+    transition: var(--transition);
 }
 
 .task-actions button {
@@ -1028,3 +1024,4 @@ body {
     }
 
 }
+
